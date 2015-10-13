@@ -1,0 +1,23 @@
+<p>Welcome</p>
+<h1>Actual Tweets containing links</h1>
+<% if current_user.tweetlists.present? %> 
+  <% current_user.tweetlists.each do |tweet| %>
+    <p><%= tweet.content %></p><br/>
+  <% end %>
+
+  <h1>List of Top Domains</h1>
+  <% top_domain = [] %>
+  
+  <% current_user.tweetlists.each do |tweet| %>
+    <% tweet_url = URI.extract(tweet.content) %>
+    <% top_domain.push(tweet_url) %>
+  <% end %>
+
+  <% list_top_domains = top_domain.flatten.each_with_object(Hash.new(0)) { |link,counts| counts[link] += 1 }.keys  %>
+
+  <% list_top_domains.each do |domain| %>
+    <p><%= domain%></p><br/>
+  <% end %>
+<% else %>
+  <p> No Tweets </p>
+<% end %>
